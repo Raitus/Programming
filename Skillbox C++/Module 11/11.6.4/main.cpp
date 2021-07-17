@@ -1,56 +1,71 @@
 #include <iostream>
 #include "string"
 
+int CheckProcessing(std::string firstNumber, std::string secondNumber, int j, int k, int i, int shift) {
+  if (i==0 && j!=k) {
+	if (j > k) {
+	  return 1;
+	} else {
+	  return 2;
+	}
+  } else {
+	for (int l = 0 + shift; (j > k ? l < j : l < k); l++) {
+	  if (firstNumber[l] > secondNumber[l]) {
+		return 1;
+	  } else if (firstNumber[l] < secondNumber[l]) {
+		return 2;
+	  }
+	}
+	if (j==firstNumber.length() && k==secondNumber.length()) {
+	  return 3;
+	} else {
+	  if (firstNumber.length()==j) {
+		for (int l = k + 1; l < secondNumber.length(); l++) {
+		  if (secondNumber[l]!='0') {
+			return 2;
+		  } else if (l==secondNumber.length() - 1 && secondNumber[l]=='0') {
+			return 3;
+		  }
+		}
+	  } else if (secondNumber.length()==k) {
+		for (int l = j + 1; l < firstNumber.length(); l++) {
+		  if (firstNumber[l]!='0') {
+			return 1;
+		  } else if (l==firstNumber.length() - 1 && firstNumber[l]=='0') {
+			return 3;
+		  }
+		}
+	  }
+	}
+  }
+  return 0;
+}
+
 int CheckNumber(std::string firstNumber, std::string secondNumber) {
-  for (int i = 0, j = 0, k = 0, tempCount = 0;
+  for (int i = 0, j = 0, k = 0, shift = 0, finalCheck;
 	   (firstNumber.length() > secondNumber.length() ? j + i < firstNumber.length() : k + i < secondNumber.length());
 	   i++) {
-	if (firstNumber[i]=='-'){
-	  j++;
-	}else if (secondNumber[i]=='-'){
-	  k++;
-	}
 	for (j += i; j < firstNumber.length() && firstNumber[j]!='.'; j++) {
 	}
 	for (k += i; k < secondNumber.length() && secondNumber[k]!='.'; k++) {
 	}
-
-	if (i==0 && j!=k) {
-	  if (j > k) {
+	if (firstNumber[0]=='-' || secondNumber[0]=='-') {
+	  if (firstNumber[i]=='-' && secondNumber[i]!='-') {
 		return 1;
-	  } else {
+	  } else if (firstNumber[i]!='-' && secondNumber[i]=='-') {
 		return 2;
+	  } else {
+		if (i==0)shift += 1;
+		finalCheck = CheckProcessing(secondNumber, firstNumber, k, j, i, shift);
+		shift+=j;
 	  }
 	} else {
-	  for (int l = 0 + tempCount; (j>k?l < j:l < k); l++) {
-		if (firstNumber[l] > secondNumber[l]) {
-		  return 1;
-		} else if (firstNumber[l] < secondNumber[l]) {
-		  return 2;
-		}
-	  }
-	  if (j==firstNumber.length() && k==secondNumber.length()) {
-		return 3;
-	  } else {
-		tempCount = j + 1;
-		if (firstNumber.length()==j){
-		  for (int l = k+1; l < secondNumber.length(); l++) {
-			if (secondNumber[l]!='0'){
-			  return 2;
-			}else if (l==secondNumber.length()-1&&secondNumber[l]=='0'){
-			  return 3;
-			}
-		  }
-		}else if (secondNumber.length()==k){
-		  for (int l = j+1; l < firstNumber.length(); l++) {
-			if (firstNumber[l]!='0'){
-			  return 1;
-			}else if (l==firstNumber.length()-1&&firstNumber[l]=='0'){
-			  return 3;
-			}
-		  }
-		}
-	  }
+	  finalCheck = CheckProcessing(firstNumber, secondNumber, j, k, i, shift);
+	}
+	if (finalCheck!=0) {
+	  if (finalCheck==1)return 1;
+	  else if (finalCheck==2)return 2;
+	  else return 3;
 	}
   }
   return 0;
