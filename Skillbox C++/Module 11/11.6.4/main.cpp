@@ -1,39 +1,39 @@
 #include <iostream>
 #include "string"
 
-int CheckProcessing(std::string firstNumber, std::string secondNumber, int j, int k, int i, int shift) {
-  if (i==0 && j!=k) {
-	if (j > k) {
+int CheckProcessing(std::string firstNumber, std::string secondNumber, int j, int k, int firstShift, int secondShift) {
+  for (int l = 0 + firstShift, m = 0 + secondShift; l < j && m < k; l++, m++) {
+	while (firstNumber[l]=='0') {
+	  l++;
+	}
+	while (secondNumber[m]=='0') {
+	  m++;
+	}
+	if (firstNumber[l] > secondNumber[m]) {
 	  return 1;
-	} else {
+	}
+
+	if (firstNumber[l] < secondNumber[m]) {
 	  return 2;
 	}
+  }
+  if (j==firstNumber.length() && k==secondNumber.length()) {
+	return 3;
   } else {
-	for (int l = 0 + shift; (j > k ? l < j : l < k); l++) {
-	  if (firstNumber[l] > secondNumber[l]) {
-		return 1;
-	  } else if (firstNumber[l] < secondNumber[l]) {
-		return 2;
-	  }
-	}
-	if (j==firstNumber.length() && k==secondNumber.length()) {
-	  return 3;
-	} else {
-	  if (firstNumber.length()==j) {
-		for (int l = k + 1; l < secondNumber.length(); l++) {
-		  if (secondNumber[l]!='0') {
-			return 2;
-		  } else if (l==secondNumber.length() - 1 && secondNumber[l]=='0') {
-			return 3;
-		  }
+	if (firstNumber.length()==j) {
+	  for (int l = k + 1; l < secondNumber.length(); l++) {
+		if (secondNumber[l]!='0') {
+		  return 2;
+		} else if (l==secondNumber.length() - 1 && secondNumber[l]=='0') {
+		  return 3;
 		}
-	  } else if (secondNumber.length()==k) {
-		for (int l = j + 1; l < firstNumber.length(); l++) {
-		  if (firstNumber[l]!='0') {
-			return 1;
-		  } else if (l==firstNumber.length() - 1 && firstNumber[l]=='0') {
-			return 3;
-		  }
+	  }
+	} else if (secondNumber.length()==k) {
+	  for (int l = j + 1; l < firstNumber.length(); l++) {
+		if (firstNumber[l]!='0') {
+		  return 1;
+		} else if (l==firstNumber.length() - 1 && firstNumber[l]=='0') {
+		  return 3;
 		}
 	  }
 	}
@@ -42,7 +42,7 @@ int CheckProcessing(std::string firstNumber, std::string secondNumber, int j, in
 }
 
 int CheckNumber(std::string firstNumber, std::string secondNumber) {
-  for (int i = 0, j = 0, k = 0, shift = 0, finalCheck;
+  for (int i = 0, j = 0, k = 0, firstShift = 0, secondShift = 0, finalCheck;
 	   (firstNumber.length() > secondNumber.length() ? j + i < firstNumber.length() : k + i < secondNumber.length());
 	   i++) {
 	for (j += i; j < firstNumber.length() && firstNumber[j]!='.'; j++) {
@@ -55,12 +55,18 @@ int CheckNumber(std::string firstNumber, std::string secondNumber) {
 	  } else if (firstNumber[i]!='-' && secondNumber[i]=='-') {
 		return 2;
 	  } else {
-		if (i==0)shift += 1;
-		finalCheck = CheckProcessing(secondNumber, firstNumber, k, j, i, shift);
-		shift+=j;
+		if (i==0) {
+		  firstShift++;
+		  secondShift++;
+		}
+		finalCheck = CheckProcessing(secondNumber, firstNumber, k, j, firstShift, secondShift);
+		firstShift += j + 1; // +1 because of dot
+		secondShift += k + 1; // +1 because of dot
 	  }
 	} else {
-	  finalCheck = CheckProcessing(firstNumber, secondNumber, j, k, i, shift);
+	  finalCheck = CheckProcessing(firstNumber, secondNumber, j, k, firstShift, secondShift);
+	  firstShift += j + 1; // +1 because of dot
+	  secondShift += k + 1; // +1 because of dot
 	}
 	if (finalCheck!=0) {
 	  if (finalCheck==1)return 1;
