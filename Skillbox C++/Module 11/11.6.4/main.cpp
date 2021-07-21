@@ -11,9 +11,7 @@ int CheckProcessing(std::string firstNumber, std::string secondNumber, int j, in
 	}
 	if (firstNumber[l] > secondNumber[m]) {
 	  return 1;
-	}
-
-	if (firstNumber[l] < secondNumber[m]) {
+	}else if (firstNumber[l] < secondNumber[m]) {
 	  return 2;
 	}
   }
