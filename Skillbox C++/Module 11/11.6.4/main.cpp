@@ -48,18 +48,33 @@ int CheckNumber(std::string firstNumber, std::string secondNumber) {
 	for (k += i; k < secondNumber.length() && secondNumber[k]!='.'; k++) {
 	}
 	if (firstNumber[0]=='-' || secondNumber[0]=='-') {
-	  if (firstNumber[i]=='-' && secondNumber[i]!='-') {
-		return 1;
-	  } else if (firstNumber[i]!='-' && secondNumber[i]=='-') {
-		return 2;
+	  if (firstNumber[0]=='-' && secondNumber[0]!='-') {
+		if (firstNumber[1]=='0' && secondNumber[0]=='0'){
+		  if (i==0) {
+			firstShift++;
+		  }
+		  finalCheck = CheckProcessing(secondNumber, firstNumber, k, j, secondShift, firstShift);
+		  firstShift += j ;
+		  secondShift += k + 1; // +1 because of dot
+		}else return 2;
+
+	  } else if (firstNumber[0]!='-' && secondNumber[0]=='-') {
+		if (firstNumber[0]=='0' && secondNumber[1]=='0'){
+		  if (i==0) {
+			secondShift++;
+		  }
+		  finalCheck = CheckProcessing(secondNumber, firstNumber, k, j, secondShift, firstShift);
+		  firstShift += j + 1; // +1 because of dot
+		  secondShift += k ;
+		}else return 1;
 	  } else {
 		if (i==0) {
 		  firstShift++;
 		  secondShift++;
 		}
-		finalCheck = CheckProcessing(secondNumber, firstNumber, k, j, firstShift, secondShift);
-		firstShift += j + 1; // +1 because of dot
-		secondShift += k + 1; // +1 because of dot
+		finalCheck = CheckProcessing(secondNumber, firstNumber, k, j, secondShift, firstShift);
+		firstShift += j;
+		secondShift += k;
 	  }
 	} else {
 	  finalCheck = CheckProcessing(firstNumber, secondNumber, j, k, firstShift, secondShift);
