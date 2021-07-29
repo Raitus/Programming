@@ -1,13 +1,34 @@
 #include <iostream>
 
-char Symbol(int x, int y, std::string str) {
+char Coordinates(int x, int y, std::string str) {
   if (y==1) {
-	return str[x-1];
+	return str[x - 1];
   } else if (y==2) {
 	return str[2 + x];
   } else if (y==3) {
 	return str[5 + x];
   }
+}
+
+int WinCheck(char symbol, std::string str) {
+  int symbCount = 0;
+  if (Coordinates(1, 1, str)==symbol && Coordinates(1, 2, str)==symbol
+  	&& Coordinates(1, 3, str)==symbol)symbCount++;
+  if (Coordinates(2, 1, str)==symbol && Coordinates(2, 2, str)==symbol
+  	&& Coordinates(2, 3, str)==symbol)symbCount++;
+  if (Coordinates(3, 1, str)==symbol && Coordinates(3, 2, str)==symbol
+  	&& Coordinates(3, 3, str)==symbol)symbCount++;
+  if (Coordinates(1, 1, str)==symbol && Coordinates(2, 2, str)==symbol
+  	&& Coordinates(3, 3, str)==symbol)symbCount++;
+  if (Coordinates(3, 1, str)==symbol && Coordinates(2, 2, str)==symbol
+  	&& Coordinates(1, 3, str)==symbol)symbCount++;
+  if (Coordinates(1, 1, str)==symbol && Coordinates(2, 1, str)==symbol
+  	&& Coordinates(3, 1, str)==symbol)symbCount++;
+  if (Coordinates(1, 2, str)==symbol && Coordinates(2, 2, str)==symbol
+  	&& Coordinates(3, 2, str)==symbol)symbCount++;
+  if (Coordinates(1, 3, str)==symbol && Coordinates(2, 3, str)==symbol
+  	&& Coordinates(3, 3, str)==symbol)symbCount++;
+  return symbCount;
 }
 
 int ResultCheck(std::string str) {
@@ -24,27 +45,12 @@ int ResultCheck(std::string str) {
 	  return 0;
 	}
 
-	int xWinCount = 0, oWinCount = 0;
-	if (Symbol(1, 1, str)=='X' && Symbol(1, 2, str)=='X' && Symbol(1, 3, str)=='X')xWinCount++;
-	if (Symbol(2, 1, str)=='X' && Symbol(2, 2, str)=='X' && Symbol(2, 3, str)=='X')xWinCount++;
-	if (Symbol(3, 1, str)=='X' && Symbol(3, 2, str)=='X' && Symbol(3, 3, str)=='X')xWinCount++;
-	if (Symbol(1, 1, str)=='X' && Symbol(2, 2, str)=='X' && Symbol(3, 3, str)=='X')xWinCount++;
-	if (Symbol(3, 1, str)=='X' && Symbol(2, 2, str)=='X' && Symbol(1, 3, str)=='X')xWinCount++;
-	if (Symbol(1, 1, str)=='X' && Symbol(2, 1, str)=='X' && Symbol(3, 1, str)=='X')xWinCount++;
-	if (Symbol(1, 2, str)=='X' && Symbol(2, 2, str)=='X' && Symbol(3, 2, str)=='X')xWinCount++;
-	if (Symbol(1, 3, str)=='X' && Symbol(2, 3, str)=='X' && Symbol(3, 3, str)=='X')xWinCount++;
+	int xWinCount, oWinCount;
 
+	xWinCount=WinCheck('X',str);
 	if (xWinCount==1 && oCount==xCount - 1) return 1;
 
-	if (Symbol(1, 1, str)=='O' && Symbol(1, 2, str)=='O' && Symbol(1, 3, str)=='O')oWinCount++;
-	if (Symbol(2, 1, str)=='O' && Symbol(2, 2, str)=='O' && Symbol(2, 3, str)=='O')oWinCount++;
-	if (Symbol(3, 1, str)=='O' && Symbol(3, 2, str)=='O' && Symbol(3, 3, str)=='O')oWinCount++;
-	if (Symbol(1, 1, str)=='O' && Symbol(2, 2, str)=='O' && Symbol(3, 3, str)=='O')oWinCount++;
-	if (Symbol(3, 1, str)=='O' && Symbol(2, 2, str)=='O' && Symbol(1, 3, str)=='O')oWinCount++;
-	if (Symbol(1, 1, str)=='O' && Symbol(2, 1, str)=='O' && Symbol(3, 1, str)=='O')oWinCount++;
-	if (Symbol(1, 2, str)=='O' && Symbol(2, 2, str)=='O' && Symbol(3, 2, str)=='O')oWinCount++;
-	if (Symbol(1, 3, str)=='O' && Symbol(2, 3, str)=='O' && Symbol(3, 3, str)=='O')oWinCount++;
-
+	oWinCount=WinCheck('O',str);
 	if (oWinCount==1 && oCount==xCount) return 2;
 	else if (xWinCount==0 && oWinCount==0) return 3;
 	else return 0;
