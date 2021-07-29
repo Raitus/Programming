@@ -12,22 +12,16 @@ char Coordinates(int x, int y, std::string str) {
 
 int WinCheck(char symbol, std::string str) {
   int symbCount = 0;
-  if (Coordinates(1, 1, str)==symbol && Coordinates(1, 2, str)==symbol
-  	&& Coordinates(1, 3, str)==symbol)symbCount++;
-  if (Coordinates(2, 1, str)==symbol && Coordinates(2, 2, str)==symbol
-  	&& Coordinates(2, 3, str)==symbol)symbCount++;
-  if (Coordinates(3, 1, str)==symbol && Coordinates(3, 2, str)==symbol
-  	&& Coordinates(3, 3, str)==symbol)symbCount++;
-  if (Coordinates(1, 1, str)==symbol && Coordinates(2, 2, str)==symbol
-  	&& Coordinates(3, 3, str)==symbol)symbCount++;
-  if (Coordinates(3, 1, str)==symbol && Coordinates(2, 2, str)==symbol
-  	&& Coordinates(1, 3, str)==symbol)symbCount++;
-  if (Coordinates(1, 1, str)==symbol && Coordinates(2, 1, str)==symbol
-  	&& Coordinates(3, 1, str)==symbol)symbCount++;
-  if (Coordinates(1, 2, str)==symbol && Coordinates(2, 2, str)==symbol
-  	&& Coordinates(3, 2, str)==symbol)symbCount++;
-  if (Coordinates(1, 3, str)==symbol && Coordinates(2, 3, str)==symbol
-  	&& Coordinates(3, 3, str)==symbol)symbCount++;
+  if (Coordinates(1, 1, str)==symbol && Coordinates(1, 2, str)==symbol && Coordinates(1, 3, str)==symbol)symbCount++;
+  if (Coordinates(2, 1, str)==symbol && Coordinates(2, 2, str)==symbol && Coordinates(2, 3, str)==symbol)symbCount++;
+  if (Coordinates(3, 1, str)==symbol && Coordinates(3, 2, str)==symbol && Coordinates(3, 3, str)==symbol)symbCount++;
+
+  if (Coordinates(1, 1, str)==symbol && Coordinates(2, 1, str)==symbol && Coordinates(3, 1, str)==symbol)symbCount++;
+  if (Coordinates(1, 2, str)==symbol && Coordinates(2, 2, str)==symbol && Coordinates(3, 2, str)==symbol)symbCount++;
+  if (Coordinates(1, 3, str)==symbol && Coordinates(2, 3, str)==symbol && Coordinates(3, 3, str)==symbol)symbCount++;
+
+  if (Coordinates(1, 1, str)==symbol && Coordinates(2, 2, str)==symbol && Coordinates(3, 3, str)==symbol)symbCount++;
+  if (Coordinates(3, 1, str)==symbol && Coordinates(2, 2, str)==symbol && Coordinates(1, 3, str)==symbol)symbCount++;
   return symbCount;
 }
 
