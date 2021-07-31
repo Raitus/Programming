@@ -53,15 +53,12 @@ int ResultCheck(std::string str) {
 }
 
 bool StringValidation(std::string str) {
-  if (str.length()==9) {
-	for (char i : str) {
-	  if (i!='X' && i!='O' && i!='.') {
-		return false;
-	  }
+  for (char i : str) {
+	if (i!='X' && i!='O' && i!='.') {
+	  return false;
 	}
-	return true;
   }
-  return false;
+  return true;
 }
 
 int main() {
@@ -71,15 +68,19 @@ int main() {
   std::cin >> x1;
   std::cin >> x2;
   std::cin >> x3;
-  x1 += x2 + x3;
-  if (StringValidation(x1)) {
-	int result = ResultCheck(x1);
-	if (result==1) {
-	  std::cout << "Petya won!\n";
-	} else if (result==2) {
-	  std::cout << "Vanya won!\n";
-	} else if (result==3) {
-	  std::cout << "Nobody!\n";
+  if (x1.length()==3 && x2.length()==3 && x3.length()==3) {
+	x1 += x2 + x3;
+	if (StringValidation(x1)) {
+	  int result = ResultCheck(x1);
+	  if (result==1) {
+		std::cout << "Petya won!\n";
+	  } else if (result==2) {
+		std::cout << "Vanya won!\n";
+	  } else if (result==3) {
+		std::cout << "Nobody!\n";
+	  } else {
+		std::cout << "Incorrect!\n";
+	  }
 	} else {
 	  std::cout << "Incorrect!\n";
 	}
