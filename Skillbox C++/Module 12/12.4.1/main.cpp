@@ -2,11 +2,12 @@
 
 int main() {
   std::cout << "--- Human ant hill ---\n" << std::endl;
-  std::string array[3];
+  std::string array[10];
   int length = sizeof(array)/sizeof(array[0]);
   for (int i = 0; i < length; ++i) {
 	std::cin>>array[i];
   }
+  std::cout<<"Choose apartment number:\n";
   for (int i = 0, flatNumber; i < 3; ++i) {
     do{
 	  std::cin>>flatNumber;
