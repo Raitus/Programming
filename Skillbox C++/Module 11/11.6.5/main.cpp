@@ -42,10 +42,10 @@ int ResultCheck(std::string str) {
 	int xWinCount, oWinCount;
 
 	xWinCount = WinCheck('X', str);
-	if (xWinCount==1 && oCount==xCount - 1) return 1;
+	if (xWinCount!=0 && oCount==xCount - 1) return 1;
 
 	oWinCount = WinCheck('O', str);
-	if (oWinCount==1 && xWinCount==0 && oCount==xCount ) return 2;
+	if (oWinCount==1 && xWinCount==0 && oCount==xCount) return 2;
 	else if (xWinCount==0 && oWinCount==0) return 3;
 	else return 0;
 
@@ -55,9 +55,7 @@ int ResultCheck(std::string str) {
 bool StringValidation(std::string str) {
   if (str.length()==9) {
 	for (char i : str) {
-	  if (i=='X' || i=='O' || i=='.') {
-
-	  } else {
+	  if (i!='X' && i!='O' && i!='.') {
 		return false;
 	  }
 	}
