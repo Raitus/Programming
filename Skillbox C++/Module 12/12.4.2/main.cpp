@@ -1,15 +1,21 @@
 #include <iostream>
 
 int RepeatedNumber(int numbers[], int length) {
+  int min{numbers[0]}, max{numbers[0]}, sum{0}, minSum{0};
   for (int i = 0; i < length; ++i) {
-	int temp = numbers[i];
-	for (int j = 1 + i; j < length; ++j) {
-	  if (numbers[j]==temp) {
-		return temp;
-	  }
+	sum += numbers[i];
+	if (numbers[i] < min) {
+	  min = numbers[i];
+	}
+	if (numbers[i] > max) {
+	  max = numbers[i];
 	}
   }
-  return 0;
+  max -= min;
+  for (int i = 0; i <= max; ++i) {
+	minSum += i + min;
+  }
+  return sum - minSum;
 }
 
 int main() {
