@@ -12,10 +12,14 @@ int RepeatedNumber(int numbers[], int length) {
 	}
   }
   max -= min;
-  for (int i = 0; i <= max; ++i) {
-	minSum += i + min;
+  if (max!=length-1){
+    return 0;
+  }else{
+	for (int i = 0; i <= max; ++i) {
+	  minSum += i + min;
+	}
+	return sum - minSum;
   }
-  return sum - minSum;
 }
 
 int main() {
@@ -26,6 +30,6 @@ int main() {
 	std::cin >> numbers[i];
   }
   int result = RepeatedNumber(numbers, length);
-  result==0 ? std::cout << "Numbers didn't repeat!" : std::cout << "Repeating number is " << result;
+  result==0 ? std::cout << "Numbers didn't repeat or count of repeated numbers more than 1!" : std::cout << "Repeating number is " << result;
   return 0;
 }
