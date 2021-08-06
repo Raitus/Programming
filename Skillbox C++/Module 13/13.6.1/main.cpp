@@ -17,8 +17,11 @@ std::vector<int> DeleteVecNumbers(std::vector<int> vec, int number) {
 int main() {
 
   int count;
-  std::cout << "How many numbers do you want to enter? - ";
-  std::cin >> count;
+  do {
+    std::cout << "How many numbers do you want to enter? - ";
+    std::cin >> count;
+  }while(count<1);
+
   std::vector<int> vec(count);
   std::cout << "Input your numbers: ";
   for (int i = 0; i < count; ++i) {
@@ -29,10 +32,14 @@ int main() {
 	int number;
 	std::cout << "Which number do you want to delete from vector? - ";
 	std::cin >> number;
-	std::cout << "Keeping numbers: ";
 	vec=DeleteVecNumbers(vec, number);
-	for (int i = 0; i < vec.size(); ++i) {
-	  std::cout << vec[i] << " ";
+	if (vec.size()==0){
+	  std::cout << "No one number is keeping.";
+	}else{
+	  std::cout << "Keeping numbers: ";
+	  for (int i = 0; i < vec.size(); ++i) {
+	    std::cout << vec[i] << " ";
+	  }
 	}
   }
   return 0;
