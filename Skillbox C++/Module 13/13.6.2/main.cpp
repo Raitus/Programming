@@ -1,10 +1,10 @@
 #include <iostream>
 #include "vector"
 
-float BasketSum(std::vector<float> cost, std::vector<int> thingID) {
+float BasketSum(std::vector<float> &cost, std::vector<int> &thingID) {
   float sum = 0;
-  for (int i = 0; i < thingID.size(); ++i) {
-	sum += cost[thingID[i]];
+  for (int i : thingID) {
+	sum += cost[i];
   }
   return sum;
 }
