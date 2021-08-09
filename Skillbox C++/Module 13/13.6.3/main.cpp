@@ -1,26 +1,25 @@
 #include <iostream>
 #include "vector"
 
-void PrintDB(std::vector<int> dataBase, int maxElements, int firstElement, bool full) {
+void PrintDB(std::vector<int>& dataBase, int firstElement) {
   std::cout << "Data base now: ";
-  if (full) {
-    for (int i = firstElement, count = 0; count!=maxElements; ++i, ++count) {
-      if (i==maxElements) {
-		i = 0;
-	  }
-	  std::cout << dataBase[i] << " ";
-	}
+  if (firstElement!=dataBase.size()) {
+    for (int i = firstElement, count = 0; count!=dataBase.size(); ++i, ++count) {
+      if (i==dataBase.size()) {
+        i = 0;
+      }
+      std::cout << dataBase[i] << " ";
+    }
   } else {
-	for (int i = 0; i!=firstElement; ++i) {
-	  std::cout << dataBase[i] << " ";
-	}
+    for (int i = 0; i!=firstElement; ++i) {
+      std::cout << dataBase[i] << " ";
+    }
   }
 
 }
 
 void AddDBElements(int maxElements) {
   int number, i{0};
-  bool full{false};
   std::vector<int> dataBase;
   std::cout << "Input data base elements:\n";
   do {
@@ -30,21 +29,19 @@ void AddDBElements(int maxElements) {
 	}
 	if (i==maxElements) {
 	  i = 0;
-	  full = true;
 	}
-	if (!full) {
+	if (dataBase.size()==i) {
 	  dataBase.push_back(number);
 	} else {
 	  dataBase[i] = number;
 	}
 	++i;
   } while (true);
-  PrintDB(dataBase, maxElements, i, full);
+  PrintDB(dataBase, i);
 }
 
 int main() {
   std::cout << "--- Low size data base ---\n" << std::endl;
-  std::vector<int> dataBase;
   int maxBDElements{20};
   AddDBElements(maxBDElements);
   return 0;
