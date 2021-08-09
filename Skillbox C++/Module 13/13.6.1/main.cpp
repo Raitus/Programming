@@ -35,8 +35,8 @@ int main() {
 	  std::cout << "No one number is keeping.";
 	}else{
 	  std::cout << "Keeping numbers: ";
-	  for (int i = 0; i < vec.size(); ++i) {
-	    std::cout << vec[i] << " ";
+	  for (int i : vec) {
+	    std::cout << i << " ";
 	  }
 	}
   }
