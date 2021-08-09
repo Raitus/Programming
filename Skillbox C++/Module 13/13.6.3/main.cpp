@@ -1,7 +1,7 @@
 #include <iostream>
 #include "vector"
 
-void PrintDB(std::vector<int>& dataBase, int firstElement) {
+void PrintDB(const std::vector<int> &dataBase, int firstElement) {
   std::cout << "Data base now: ";
   if (firstElement!=dataBase.size()) {
     for (int i = firstElement, count = 0; count!=dataBase.size(); ++i, ++count) {
