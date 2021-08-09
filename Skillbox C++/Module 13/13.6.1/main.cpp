@@ -1,14 +1,12 @@
 #include <iostream>
 #include "vector"
 
-std::vector<int> DeleteVecNumbers(std::vector<int> vec, int number) {
-  for (int i = 0; i < vec.size(); ++i) {
-	if (vec[i]==number) {
-	  for (int j = i + 1; j < vec.size(); ++j) {
-		vec[j - 1] = vec[j];
-	  }
-	  vec.pop_back();
-	  --i;
+std::vector<int> DeleteVecNumbers(std::vector<int> &vec, int number) {
+  for (auto i=vec.begin(); i != vec.end(); ) {
+	if (*i==number){
+	  i=vec.erase(i);
+	}else{
+	  ++i;
 	}
   }
   return vec;
@@ -33,7 +31,7 @@ int main() {
 	std::cout << "Which number do you want to delete from vector? - ";
 	std::cin >> number;
 	vec=DeleteVecNumbers(vec, number);
-	if (vec.size()==0){
+	if (vec.empty()){
 	  std::cout << "No one number is keeping.";
 	}else{
 	  std::cout << "Keeping numbers: ";
