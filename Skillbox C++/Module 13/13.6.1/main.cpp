@@ -1,7 +1,7 @@
 #include <iostream>
 #include "vector"
 
-std::vector<int> DeleteVecNumbers(std::vector<int> &vec, int number) {
+void DeleteVecNumbers(std::vector<int> &vec, int number) {
   for (auto i=vec.begin(); i != vec.end(); ) {
 	if (*i==number){
 	  i=vec.erase(i);
@@ -9,7 +9,6 @@ std::vector<int> DeleteVecNumbers(std::vector<int> &vec, int number) {
 	  ++i;
 	}
   }
-  return vec;
 }
 
 int main() {
@@ -30,7 +29,7 @@ int main() {
 	int number;
 	std::cout << "Which number do you want to delete from vector? - ";
 	std::cin >> number;
-	vec=DeleteVecNumbers(vec, number);
+	DeleteVecNumbers(vec, number);
 	if (vec.empty()){
 	  std::cout << "No one number is keeping.";
 	}else{
