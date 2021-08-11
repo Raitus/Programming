@@ -7,18 +7,17 @@ int main() {
   for (int i = 0, number = 0; i < y; ++i) {
 	for (int j = 0; j < x; ++j, ++number) {
 	  array[i][j] = number;
+	  std::cout<<array[i][j]<<"\t";
 	}
+	std::cout<<std::endl;
 	++i;
 	for (int j = x - 1; i < y && j >= 0; --j, ++number) {
 	  array[i][j] = number;
 	}
-  }
-
-  for (auto & i : array) {
-	for (int j : i) {
-	  std::cout << j << "\t";
+	for (int j = 0; i < y && j < x; ++j) {
+	  std::cout<<array[i][j]<<"\t";
 	}
-	std::cout << std::endl;
+	std::cout<<std::endl;
   }
   return 0;
 }
