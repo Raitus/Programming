@@ -90,8 +90,8 @@ void DeskPrint(const int x, const int y, char desk[3][3]) {
 int main() {
   std::cout << "--- Tic toe game 3x3 ---\n" << std::endl;
   char desk[3][3] = {{' ', ' ', ' '},
-					 {' ', ' ', ' '},
-					 {' ', ' ', ' '}};
+                     {' ', ' ', ' '},
+                     {' ', ' ', ' '}};
   DeskPrint(3, 3, desk); //Initially, I wanted to do it through constant variables, but there was not enough knowledge in transferring the array.
   for (int i = 0; i < 9; ++i) {
 	PlayerMove(i, desk);
