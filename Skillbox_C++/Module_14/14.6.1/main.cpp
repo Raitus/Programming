@@ -1,5 +1,14 @@
 #include <iostream>
 
+void Print(int array[2][6]){
+  for (int i = 0; i < 2; ++i) {
+	for (int j = 0; j < 6; ++j) {
+	  std::cout<<array[i][j]<<" ";
+	}
+	std::cout<<std::endl;
+  }
+}
+
 int main() {
   std::cout << "--- Banquet table ---\n" << std::endl;
 
@@ -16,5 +25,12 @@ int main() {
     tableware[1][2]++; //person at [1][2] place took the spoon from VIP person
   }
   plates[1][0]--; //officiant take away desert plate
+
+  std::cout<<"Plates: \n";
+  Print(plates);
+  std::cout<<"Tableware: \n";
+  Print(tableware);
+  std::cout<<"Chairs: \n";
+  Print(chairs);
   return 0;
 }
