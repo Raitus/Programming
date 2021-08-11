@@ -1,0 +1,3 @@
+C:/Users/Raitus/CLionProjects/16.6.6-2/cmake-build-debug/CMakeFiles/16_6_6_2.dir
+C:/Users/Raitus/CLionProjects/16.6.6-2/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/Raitus/CLionProjects/16.6.6-2/cmake-build-debug/CMakeFiles/rebuild_cache.dir

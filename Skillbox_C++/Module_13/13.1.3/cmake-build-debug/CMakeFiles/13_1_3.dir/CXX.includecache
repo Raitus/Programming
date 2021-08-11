@@ -1,0 +1,14 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+D:/WebStorage/Education/Programming/Skillbox C++/Module 13/13.1.3/main.cpp
+iostream
+-
+vector
+D:/WebStorage/Education/Programming/Skillbox C++/Module 13/13.1.3/vector
+
