@@ -1,3 +1,0 @@
-D:/WebStorage/Education/Programming/Skillbox C++/Module 13/13.6.1/cmake-build-debug/CMakeFiles/13_6_1.dir
-D:/WebStorage/Education/Programming/Skillbox C++/Module 13/13.6.1/cmake-build-debug/CMakeFiles/edit_cache.dir
-D:/WebStorage/Education/Programming/Skillbox C++/Module 13/13.6.1/cmake-build-debug/CMakeFiles/rebuild_cache.dir

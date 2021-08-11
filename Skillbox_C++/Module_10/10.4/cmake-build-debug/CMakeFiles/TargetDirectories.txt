@@ -1,3 +1,0 @@
-C:/Users/Raitus/CLionProjects/10.4/cmake-build-debug/CMakeFiles/10_4.dir
-C:/Users/Raitus/CLionProjects/10.4/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/Raitus/CLionProjects/10.4/cmake-build-debug/CMakeFiles/rebuild_cache.dir
