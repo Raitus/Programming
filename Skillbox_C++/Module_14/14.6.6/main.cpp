@@ -25,7 +25,7 @@ int main() {
   std::cout<<"Output vector R:\n";
   for (int j = 0; j < 4; ++j) {
 	for (int i = 0; i < 4; ++i) {
-	  R[j]+=V[i]*matrix[j][i];
+	  R[j]+=V[i]*matrix[i][j];
 	}
 	std::cout<<R[j]<<' ';
   }
