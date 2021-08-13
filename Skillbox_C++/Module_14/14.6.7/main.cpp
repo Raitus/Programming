@@ -1,6 +1,21 @@
 #include <iostream>
 #include "array"
 
+void Popping(std::array<std::array<bool, 12>, 12> &pupyrka, int &count, int &x1, int &y1, int &x2, int &y2){
+  for (int i = y1-1; i <= y2-1; ++i) {
+    for (int j = x1-1; j <= x2-1; ++j) {
+      if (pupyrka[i][j]){
+        std::cout<<"Pop! ";
+        count--;
+        pupyrka[i][j]=false;
+      }else{
+        std::cout<<"     ";
+      }
+    }
+    std::cout << std::endl;
+  }
+}
+
 void PopRegion(std::array<std::array<bool, 12>, 12> &pupyrka, int &count) {
   std::cout << "Choose region to make a Pop!\n";
 int x1, x2, y1, y2;
@@ -23,18 +38,19 @@ bool check;
       check=true;
     }
   }while(check);
-  for (int i = y1-1, popCount{0}; i <= y2-1; ++i) {
-	for (int j = x1-1; j <= x2-1; ++j) {
-	  if (pupyrka[i][j]){
-		popCount++;
-	    std::cout<<"Pop! ";
-	    count--;
-	    pupyrka[i][j]=false;
-	    if (popCount%12==0) std::cout<<std::endl;
-	  }
-	}
+  if (y1<y2){
+    if (x1<x2){
+	  Popping(pupyrka, count, x1, y1, x2, y2);
+    }else{
+      Popping(pupyrka, count, x2, y1, x1, y2);
+    }
+  }else{
+    if (x1<x2){
+      Popping(pupyrka, count, x1, y2, x2, y1);
+    }else{
+      Popping(pupyrka, count, x2, y2, x1, y1);
+    }
   }
-
 }
 
 void ArrayPrint(std::array<std::array<bool, 12>, 12> &pupyrka) {
