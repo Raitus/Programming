@@ -25,11 +25,13 @@ char WinCheck(char desk[3][3]) {
 		  return symbol;
 		}
 	  }
-	  for (int i = 0, bump{2}, countForeignDiagonal{0}; step==1 && i < 3; ++i, --bump) {
-		if (desk[i][bump]==symbol) {
-		  countForeignDiagonal++;
-		  if (countForeignDiagonal==3) {
-			return symbol;
+	  if(step==1) {
+		for (int i = 0, bump{2}, countForeignDiagonal{0}; i < 3; ++i, --bump) {
+		  if (desk[i][bump]==symbol) {
+			countForeignDiagonal++;
+			if (countForeignDiagonal==3) {
+			  return symbol;
+			}
 		  }
 		}
 	  }
