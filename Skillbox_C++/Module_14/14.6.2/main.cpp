@@ -1,10 +1,10 @@
 #include <iostream>
 
 char WinCheck(char desk[3][3]) {
-  for (int step = 0; step < 3; ++step) {
+  for (int step = 0, countMainDiagonal{0}; step < 3; ++step) {
 	if (desk[step][step]!=' ') {
 	  char symbol = desk[step][step];
-	  for (int i = 0, countHorizontal = 0, countVertical = 0; i < 3; ++i) {
+	  for (int i = 0, countHorizontal = 0, countVertical = 0; i < 3; ++i) { //Horizontal & Vertical check
 		if (desk[step][i]==symbol) {
 		  countHorizontal++;
 		  if (countHorizontal==3) {
@@ -14,6 +14,21 @@ char WinCheck(char desk[3][3]) {
 		if (desk[i][step]==symbol) {
 		  countVertical++;
 		  if (countVertical==3) {
+			return symbol;
+		  }
+		}
+	  }
+	  //Diagonals check
+	  if (desk[step][step]==symbol) {
+		countMainDiagonal++;
+		if (countMainDiagonal==3) {
+		  return symbol;
+		}
+	  }
+	  for (int i = 0, bump{2}, countForeignDiagonal{0}; step==1 && i < 3; ++i, --bump) {
+		if (desk[i][bump]==symbol) {
+		  countForeignDiagonal++;
+		  if (countForeignDiagonal==3) {
 			return symbol;
 		  }
 		}
@@ -90,9 +105,11 @@ void DeskPrint(const int x, const int y, char desk[3][3]) {
 int main() {
   std::cout << "--- Tic toe game 3x3 ---\n" << std::endl;
   char desk[3][3] = {{' ', ' ', ' '},
-                     {' ', ' ', ' '},
-                     {' ', ' ', ' '}};
-  DeskPrint(3, 3, desk); //Initially, I wanted to do it through constant variables, but there was not enough knowledge in transferring the array.
+					 {' ', ' ', ' '},
+					 {' ', ' ', ' '}};
+  DeskPrint(3,
+			3,
+			desk); //Initially, I wanted to do it through constant variables, but there was not enough knowledge in transferring the array.
   for (int i = 0; i < 9; ++i) {
 	PlayerMove(i, desk);
 	DeskPrint(3, 3, desk);
