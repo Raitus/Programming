@@ -134,24 +134,26 @@ void BotCoordinatesInput(std::array<std::array<bool, fieldSize>, fieldSize> &fie
       if (!top && degree > 45 && degree <= 135) { //top
         top = true;
         x2 = x1;
-        if (y1 - shipSize - 1 >= 0)y2 = y1 - shipSize - 1;
+        if (y1 - (shipSize - 1) >= 0)y2 = y1 - (shipSize - 1);
       } else if (!left && degree > 135 && degree <= 225) { //left
         left = true;
-        if (x1 - shipSize - 1 >= 0) x2 = x1 - shipSize - 1;
+        if (x1 - (shipSize - 1) >= 0) x2 = x1 - (shipSize - 1);
         y2 = y1;
       } else if (!bottom && degree > 225 && degree <= 315) { //bottom
         bottom = true;
         x2 = x1;
-        if (y1 + shipSize - 1 <= 9)y2 = y1 + shipSize - 1;
+        if (y1 + (shipSize - 1) <= 9)y2 = y1 + (shipSize - 1);
       } else if (!right) { //right
         right = true;
-        if (x1 + shipSize - 1 <= 9) x2 = x1 + shipSize - 1;
+        if (x1 + (shipSize - 1) <= 9) x2 = x1 + (shipSize - 1);
         y2 = y1;
       }
       if (x2 == -1 || y2 == -1 || !BorderChecking(field, x1, y1, x2, y2)) {
         bordersMistake = true;
+        degree=(degree+90)%360;
+        if (top && left && bottom && right) break;
       }
-    } while ((!top && !left && !bottom && !right) && bordersMistake);
+    } while (bordersMistake);
   } while (bordersMistake);
 
   xCoordinates.push_back(x1);
@@ -401,6 +403,7 @@ int main() {
     FieldCreation(field1, xCoordinatesField1, yCoordinatesField1, player1);
     std::cout << player2 << " is moving.\n";
     BotFieldCreation(field2, xCoordinatesField2, yCoordinatesField2);
+    Visualisation(field2);
   } else {
     std::cout << player1 << ", choose places for your ships.\n";
     FieldCreation(field1, xCoordinatesField1, yCoordinatesField1, player1);
