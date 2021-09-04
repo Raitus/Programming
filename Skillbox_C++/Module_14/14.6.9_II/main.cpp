@@ -2,6 +2,7 @@
 #include "array"
 #include "vector"
 #include "random"
+#include "ctime"
 
 const int fieldSize{10};
 
@@ -59,10 +60,10 @@ bool BorderChecking(std::array<std::array<bool, fieldSize>, fieldSize> &field,
 }
 
 bool CoordinatesChecking(std::array<std::array<bool, fieldSize>, fieldSize> &field,
-                         int &x1,
-                         int &y1,
-                         int &x2,
-                         int &y2) {
+                         int x1,
+                         int y1,
+                         int x2,
+                         int y2) {
   if (x1 == x2) {
     if (y1 < y2) {
       for (int y = y1; y <= y2; ++y) {
@@ -87,7 +88,7 @@ bool CoordinatesChecking(std::array<std::array<bool, fieldSize>, fieldSize> &fie
   return true;
 }
 
-void Coordinates(int &x, int &y) {
+void CoordinatesInput(int &x, int &y) {
   bool checkCoordinates;
   do {
     checkCoordinates = false;
@@ -113,7 +114,7 @@ void Visualisation(std::array<std::array<bool, fieldSize>, fieldSize> &field) {
   std::cout << std::endl;
 }
 
-void BotCoordinatesInput(std::array<std::array<bool, fieldSize>, fieldSize> &field,
+void BotShipArrangement(std::array<std::array<bool, fieldSize>, fieldSize> &field,
                          std::vector<int> &xCoordinates,
                          std::vector<int> &yCoordinates,
                          int shipSize,
@@ -183,20 +184,19 @@ void BotCoordinatesInput(std::array<std::array<bool, fieldSize>, fieldSize> &fie
   }
 }
 
-void CoordinatesInput(std::array<std::array<bool, fieldSize>, fieldSize> &field,
+void ShipArrangement(std::array<std::array<bool, fieldSize>, fieldSize> &field,
                       std::vector<int> &xCoordinates,
                       std::vector<int> &yCoordinates,
-                      std::string &playerName,
-                      int &shipSize) {
+                      int shipSize) {
   int x1, y1, x2, y2;
   bool correctness;
-  std::cout << playerName << " input coordinates: ";
+  std::cout << "Input coordinates: ";
   do {
     correctness = true;
-    Coordinates(x1, y1);
-    Coordinates(x2, y2);
+    CoordinatesInput(x1, y1);
+    CoordinatesInput(x2, y2);
     if (((x1 == x2 && std::abs(y1 - y2) + 1 == shipSize) || (y1 == y2 && std::abs(x1 - x2) + 1 == shipSize))
-        && CoordinatesChecking(field, x1, y1, x2, y2) && BorderChecking(field, x1, y1, x2, y2)) {}
+        && BorderChecking(field, x1, y1, x2, y2)) {}
     else {
       correctness = false;
       std::cout << "Invalid ship`s coordinate! Try again.\n";
@@ -232,15 +232,15 @@ void CoordinatesInput(std::array<std::array<bool, fieldSize>, fieldSize> &field,
 void BotFieldCreation(std::array<std::array<bool, fieldSize>, fieldSize> &field,
                       std::vector<int> &xCoordinates,
                       std::vector<int> &yCoordinates) {
-  std::random_device rd;
-  std::mt19937 gen(rd());
+  //std::random_device rd; //random_device is not working in our case. I found that ships arrangement each time, on the same places.
+  std::mt19937 gen(time(nullptr));
   std::uniform_int_distribution<> width(0, 9);
-  BotCoordinatesInput(field, xCoordinates, yCoordinates, 4, gen, width);
+  BotShipArrangement(field, xCoordinates, yCoordinates, 4, gen, width);
   for (int i = 0; i < 2; ++i) {
-    BotCoordinatesInput(field, xCoordinates, yCoordinates, 3, gen, width);
+    BotShipArrangement(field, xCoordinates, yCoordinates, 3, gen, width);
   }
   for (int i = 0; i < 3; ++i) {
-    BotCoordinatesInput(field, xCoordinates, yCoordinates, 2, gen, width);
+    BotShipArrangement(field, xCoordinates, yCoordinates, 2, gen, width);
   }
   for (int i = 0; i < 4; ++i) {
     int x, y;
@@ -265,8 +265,7 @@ void BotFieldCreation(std::array<std::array<bool, fieldSize>, fieldSize> &field,
 
 void FieldCreation(std::array<std::array<bool, fieldSize>, fieldSize> &field,
                    std::vector<int> &xCoordinates,
-                   std::vector<int> &yCoordinates,
-                   std::string &playerName) {
+                   std::vector<int> &yCoordinates) {
   int shipSize, ship1 = 4, ship2 = 3, ship3 = 2;
   bool ship4 = true;
   for (int shipCount = 10; shipCount > 0; --shipCount) {
@@ -277,18 +276,17 @@ void FieldCreation(std::array<std::array<bool, fieldSize>, fieldSize> &field,
     do {
       check = false;
       do {
-        std::cout << playerName
-                  << " choose the size of the ship, which do you want to place on the board (from 1 to 4): ";
+        std::cout << "Choose the size of the ship, which do you want to place on the board (from 1 to 4): ";
         std::cin >> shipSize;
       } while (shipSize < 1 || shipSize > 4);
       if (shipSize == 1 && ship1 != 0) {
         ship1--;
         int x, y;
         bool bordersMistake;
-        std::cout << playerName << " input coordinates: ";
+        std::cout <<"Input coordinates: ";
         do {
           bordersMistake = false;
-          Coordinates(x, y);
+          CoordinatesInput(x, y);
           if (!BorderChecking(field, x, y, x, y)) {
             bordersMistake = true;
           }
@@ -302,13 +300,13 @@ void FieldCreation(std::array<std::array<bool, fieldSize>, fieldSize> &field,
 
       } else if (shipSize == 2 && ship2 != 0) {
         ship2--;
-        CoordinatesInput(field, xCoordinates, yCoordinates, playerName, shipSize);
+        ShipArrangement(field, xCoordinates, yCoordinates, shipSize);
       } else if (shipSize == 3 && ship3 != 0) {
         ship3--;
-        CoordinatesInput(field, xCoordinates, yCoordinates, playerName, shipSize);
+        ShipArrangement(field, xCoordinates, yCoordinates, shipSize);
       } else if (shipSize == 4 && ship4) {
         ship4 = false;
-        CoordinatesInput(field, xCoordinates, yCoordinates, playerName, shipSize);
+        ShipArrangement(field, xCoordinates, yCoordinates, shipSize);
       } else {
         check = true;
         std::cout << "All ships with this size on the board.\n";
@@ -338,6 +336,15 @@ void ShipDefeatingCheck(std::array<std::array<bool, fieldSize>, fieldSize> &oppo
   }
 }
 
+void BotMove(std::array<std::array<bool, fieldSize>, fieldSize> &attackingField,
+             std::array<std::array<bool, fieldSize>, fieldSize> &opponentField,
+             std::vector<int> &xCoordinates,
+             std::vector<int> &yCoordinates,
+             int &shipCount) {
+
+
+}
+
 void Game(std::array<std::array<bool, fieldSize>, fieldSize> &attackingField,
           std::array<std::array<bool, fieldSize>, fieldSize> &opponentField,
           std::vector<int> &xCoordinates,
@@ -350,7 +357,7 @@ void Game(std::array<std::array<bool, fieldSize>, fieldSize> &attackingField,
     Visualisation(attackingField);
     do {
       std::cout << "Input coordinates of attack: ";
-      Coordinates(x, y);
+      CoordinatesInput(x, y);
       if (attackingField[y][x])std::cout << "Wrong coordinates of attack. Try again!\n";
     } while (attackingField[y][x]);
     attackingField[y][x] = true;
@@ -400,15 +407,29 @@ int main() {
   int shipCountPlayer1 = 10, shipCountPlayer2 = 10;
   if (answer == 'Y') {
     std::cout << player1 << ", choose places for your ships.\n";
-    FieldCreation(field1, xCoordinatesField1, yCoordinatesField1, player1);
-    std::cout << player2 << " is moving.\n";
+    FieldCreation(field1, xCoordinatesField1, yCoordinatesField1);
+    std::cout << player2 << " is creating his field.\n";
     BotFieldCreation(field2, xCoordinatesField2, yCoordinatesField2);
-    Visualisation(field2);
+    //Visualisation(field2);
+    {
+      bool move{false};
+      do {
+        if (!move) {
+          std::cout << "\n===================" << std::endl << player1 << ", your move." << std::endl;
+          Game(field1Attacking, field2, xCoordinatesField2, yCoordinatesField2, shipCountPlayer2);
+        } else {
+          std::cout << "\n===================" << std::endl << player2 << " is moving." << std::endl;
+          BotMove(field2Attacking, field1, xCoordinatesField1, yCoordinatesField1, shipCountPlayer1);
+          //Game(field2Attacking, field1, deckCountPlayer1);
+        }
+        move = !move;
+      } while (shipCountPlayer1 != 0 && shipCountPlayer2 != 0);
+    }
   } else {
     std::cout << player1 << ", choose places for your ships.\n";
-    FieldCreation(field1, xCoordinatesField1, yCoordinatesField1, player1);
+    FieldCreation(field1, xCoordinatesField1, yCoordinatesField1);
     std::cout << player2 << ", choose places for your ships.\n";
-    FieldCreation(field2, xCoordinatesField2, yCoordinatesField2, player2);
+    FieldCreation(field2, xCoordinatesField2, yCoordinatesField2);
     {
       bool move{false};
       do {
