@@ -1,7 +1,5 @@
 #include <iostream>
 #include "array"
-#include "random"
-#include "ctime"
 
 const int fieldSize{10};
 
@@ -84,69 +82,6 @@ void Visualisation(std::array<std::array<bool, fieldSize>, fieldSize> &field) {
   std::cout << std::endl;
 }
 
-void BotShipArrangement(std::array<std::array<bool, fieldSize>, fieldSize> &field,
-                        int shipSize,
-                        std::mt19937 &gen,
-                        std::uniform_int_distribution<> &width) {
-  std::uniform_int_distribution<> circleDegree(0, 359);
-  int x1, y1, x2{-1}, y2{-1}, degree;
-  bool bordersMistake, top, left, bottom, right;
-  //input coordinates
-  do {
-    top = false, left = false, bottom = false, right = false;
-    x1 = width(gen);
-    y1 = width(gen);
-    degree = circleDegree(gen);
-    do {
-      bordersMistake = false;
-      if (!top && degree > 45 && degree <= 135) { //top
-        top = true;
-        x2 = x1;
-        if (y1 - (shipSize - 1) >= 0)y2 = y1 - (shipSize - 1);
-      } else if (!left && degree > 135 && degree <= 225) { //left
-        left = true;
-        if (x1 - (shipSize - 1) >= 0) x2 = x1 - (shipSize - 1);
-        y2 = y1;
-      } else if (!bottom && degree > 225 && degree <= 315) { //bottom
-        bottom = true;
-        x2 = x1;
-        if (y1 + (shipSize - 1) <= 9)y2 = y1 + (shipSize - 1);
-      } else if (!right) { //right
-        right = true;
-        if (x1 + (shipSize - 1) <= 9) x2 = x1 + (shipSize - 1);
-        y2 = y1;
-      }
-      if (x2 == -1 || y2 == -1 || !BorderChecking(field, x1, y1, x2, y2)) {
-        bordersMistake = true;
-        degree=(degree+90)%360;
-        if (top && left && bottom && right) break;
-      }
-    } while (bordersMistake);
-  } while (bordersMistake);
-
-  if (x1 == x2) {
-    if (y1 < y2) {
-      for (int y = y1; y <= y2; ++y) {
-        field[y][x1] = true;
-      }
-    } else {
-      for (int y = y2; y <= y1; ++y) {
-        field[y][x1] = true;
-      }
-    }
-  } else {
-    if (x1 < x2) {
-      for (int x = x1; x <= x2; ++x) {
-        field[y1][x] = true;
-      }
-    } else {
-      for (int x = x2; x <= x1; ++x) {
-        field[y1][x] = true;
-      }
-    }
-  }
-}
-
 void ShipArrangement(std::array<std::array<bool, fieldSize>, fieldSize> &field,
                      std::string &playerName,
                      int &shipSize) {
@@ -184,33 +119,6 @@ void ShipArrangement(std::array<std::array<bool, fieldSize>, fieldSize> &field,
         field[y1][x] = true;
       }
     }
-  }
-}
-
-void BotFieldCreation(std::array<std::array<bool, fieldSize>, fieldSize> &field) {
-  //std::random_device rd; //random_device is not working in our case. I found that ships arrangement each time, on the same places.
-  std::mt19937 gen(time(nullptr));
-  std::uniform_int_distribution<> width(0, 9);
-  BotShipArrangement(field, 4, gen, width);
-  for (int i = 0; i < 2; ++i) {
-    BotShipArrangement(field, 3, gen, width);
-  }
-  for (int i = 0; i < 3; ++i) {
-    BotShipArrangement(field, 2, gen, width);
-  }
-  for (int i = 0; i < 4; ++i) {
-    int x, y;
-    bool bordersMistake;
-    //input coordinates
-    do {
-      bordersMistake = false;
-      x = width(gen);
-      y = width(gen);
-      if (!BorderChecking(field, x, y, x, y)) {
-        bordersMistake = true;
-      }
-    } while (bordersMistake);
-    field[y][x] = true;
   }
 }
 
@@ -304,45 +212,23 @@ int main() {
                         false, false, false, false, false});
 
   std::string player1{"Player_1"}, player2{"Player_2"};
-
-  char answer;
-  {
-    bool check;
-    std::cout << "Do you want to play with artificial intelligence? (Y/N) ";
-    do {
-      check = false;
-      std::cin >> answer;
-      if (answer != 'Y' && answer != 'N') {
-        check = true;
-        std::cout << "Incorrect answer! Choose between Y & N. ";
-      }
-    } while (check);
-  }
   int deckCountPlayer1 = 20, deckCountPlayer2 = 20;
-  if (answer == 'Y') {
-    std::cout << player1 << ", choose places for your ships.\n";
-    FieldCreation(field1, player1);
-    std::cout << player2 << " is moving.\n";
-    BotFieldCreation(field2);
-    Visualisation(field2);
-  } else {
-    std::cout << player1 << ", choose places for your ships.\n";
-    FieldCreation(field1, player1);
-    std::cout << player2 << ", choose places for your ships.\n";
-    FieldCreation(field2, player2);
-    {
-      bool move{false};
-      do {
-        if (!move) {
-          std::cout << "\n===================" << std::endl << player1 << ", your move." << std::endl;
-          Game(field1Attacking, field2, deckCountPlayer2);
-        } else {
-          std::cout << "\n===================" << std::endl << player2 << ", your move." << std::endl;
-          Game(field2Attacking, field1, deckCountPlayer1);
-        }
-        move = !move;
-      } while (deckCountPlayer1 != 0 && deckCountPlayer2 != 0);
-    }
+  std::cout << player1 << ", choose places for your ships.\n";
+  FieldCreation(field1, player1);
+  std::cout << player2 << ", choose places for your ships.\n";
+  FieldCreation(field2, player2);
+  {
+    bool move{false};
+    do {
+      if (!move) {
+        std::cout << "\n===================" << std::endl << player1 << ", your move." << std::endl;
+        Game(field1Attacking, field2, deckCountPlayer2);
+      } else {
+        std::cout << "\n===================" << std::endl << player2 << ", your move." << std::endl;
+        Game(field2Attacking, field1, deckCountPlayer1);
+      }
+      move = !move;
+    } while (deckCountPlayer1 != 0 && deckCountPlayer2 != 0);
   }
 
   if (deckCountPlayer1 == 0)std::cout << player2 << " won!\n";
