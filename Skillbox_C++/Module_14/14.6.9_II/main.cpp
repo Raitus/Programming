@@ -115,11 +115,11 @@ void Visualisation(std::array<std::array<bool, fieldSize>, fieldSize> &field) {
 }
 
 void BotShipArrangement(std::array<std::array<bool, fieldSize>, fieldSize> &field,
-                         std::vector<int> &xCoordinates,
-                         std::vector<int> &yCoordinates,
-                         int shipSize,
-                         std::mt19937 &gen,
-                         std::uniform_int_distribution<> &width) {
+                        std::vector<int> &xCoordinates,
+                        std::vector<int> &yCoordinates,
+                        int shipSize,
+                        std::mt19937 &gen,
+                        std::uniform_int_distribution<> &width) {
 
   std::uniform_int_distribution<> circleDegree(0, 359);
   int x1, y1, x2{-1}, y2{-1}, degree;
@@ -151,7 +151,7 @@ void BotShipArrangement(std::array<std::array<bool, fieldSize>, fieldSize> &fiel
       }
       if (x2 == -1 || y2 == -1 || !BorderChecking(field, x1, y1, x2, y2)) {
         bordersMistake = true;
-        degree=(degree+90)%360;
+        degree = (degree + 90)%360;
         if (top && left && bottom && right) break;
       }
     } while (bordersMistake);
@@ -185,9 +185,9 @@ void BotShipArrangement(std::array<std::array<bool, fieldSize>, fieldSize> &fiel
 }
 
 void ShipArrangement(std::array<std::array<bool, fieldSize>, fieldSize> &field,
-                      std::vector<int> &xCoordinates,
-                      std::vector<int> &yCoordinates,
-                      int shipSize) {
+                     std::vector<int> &xCoordinates,
+                     std::vector<int> &yCoordinates,
+                     int shipSize) {
   int x1, y1, x2, y2;
   bool correctness;
   std::cout << "Input coordinates: ";
@@ -283,7 +283,7 @@ void FieldCreation(std::array<std::array<bool, fieldSize>, fieldSize> &field,
         ship1--;
         int x, y;
         bool bordersMistake;
-        std::cout <<"Input coordinates: ";
+        std::cout << "Input coordinates: ";
         do {
           bordersMistake = false;
           CoordinatesInput(x, y);
@@ -316,7 +316,7 @@ void FieldCreation(std::array<std::array<bool, fieldSize>, fieldSize> &field,
   }
 }
 
-void ShipDefeatingCheck(std::array<std::array<bool, fieldSize>, fieldSize> &opponentField,
+bool ShipDefeatingCheck(std::array<std::array<bool, fieldSize>, fieldSize> &opponentField,
                         std::vector<int> &xCoordinates,
                         std::vector<int> &yCoordinates,
                         int &shipCount) {
@@ -332,17 +332,10 @@ void ShipDefeatingCheck(std::array<std::array<bool, fieldSize>, fieldSize> &oppo
       }
       shipCount--;
       std::cout << " - Defeated ship!" << std::endl;
+      return true;
     }
   }
-}
-
-void BotMove(std::array<std::array<bool, fieldSize>, fieldSize> &attackingField,
-             std::array<std::array<bool, fieldSize>, fieldSize> &opponentField,
-             std::vector<int> &xCoordinates,
-             std::vector<int> &yCoordinates,
-             int &shipCount) {
-
-
+  return false;
 }
 
 void Game(std::array<std::array<bool, fieldSize>, fieldSize> &attackingField,
@@ -369,6 +362,149 @@ void Game(std::array<std::array<bool, fieldSize>, fieldSize> &attackingField,
     }
   } while (check && shipCount != 0);
   if (shipCount != 0) std::cout << " - Past!" << std::endl;
+}
+
+void BotMove(std::array<std::array<bool, fieldSize>, fieldSize> &attackingField,
+             std::array<std::array<bool, fieldSize>, fieldSize> &opponentField,
+             std::vector<int> &xCoordinates,
+             std::vector<int> &yCoordinates,
+             int &shipCount,
+             std::string &player1,
+             std::array<std::array<bool, fieldSize>, fieldSize> &player1AttackingField,
+             std::array<std::array<bool, fieldSize>, fieldSize> &player1opponentField,
+             std::vector<int> &player1xCoordinates,
+             std::vector<int> &player1yCoordinates,
+             int &player2ShipCount) {
+  int x, y;
+  bool check;
+  do {
+    check = false;
+    std::mt19937 gen(time(nullptr));
+    std::uniform_int_distribution<> width(0, 9), circleDegree(0, 359);
+    do {
+      x = width(gen);
+      y = width(gen);
+      //CoordinatesInput(x, y);
+    } while (attackingField[y][x]);
+    attackingField[y][x] = true;
+    if (opponentField[y][x]) {
+      std::cout << " - Hit!" << std::endl;
+      opponentField[y][x] = false;
+      check = true;
+      if (!ShipDefeatingCheck(opponentField, xCoordinates, yCoordinates, shipCount)) {
+        int degree = circleDegree(gen);
+        bool border;
+        do {
+          int xt = x, yt = y;
+          bool direction, player1Move{false};
+          border = false;
+          //bool top = false, left = false, bottom = false, right = false;
+          //input coordinates
+          do {
+            direction = true;
+            if (degree > 45 && degree <= 135) { //top
+              if (yt > 0) {
+                --yt;
+              } else {
+                if (std::abs(yt - y) == 0) { //достигнута граница, идём влево
+                  degree = (degree + 90)%360;
+                  border = true;
+                  break;
+                } else { //достигнута граница, идём в другую сторону
+                  degree = (degree + 180)%360;
+                  border = true;
+                  break;
+                }
+              }
+            } else if (degree > 135 && degree <= 225) { //left
+              if (xt > 0) {
+                --xt;
+              } else {
+                if (std::abs(xt - x) == 0) { //достигнута граница, идём влево
+                  degree = (degree + 90)%360;
+                  border = true;
+                  break;
+                } else { //достигнута граница, идём в другую сторону
+                  degree = (degree + 180)%360;
+                  border = true;
+                  break;
+                }
+              }
+            } else if (degree > 225 && degree <= 315) { //bottom
+              if (yt < 9) {
+                ++yt;
+              } else {
+                if (std::abs(yt - y) == 0) { //достигнута граница, идём влево
+                  degree = (degree + 90)%360;
+                  border = true;
+                  break;
+                } else { //достигнута граница, идём в другую сторону
+                  degree = (degree + 180)%360;
+                  border = true;
+                  break;
+                }
+              }
+            } else { //right
+              if (xt < 9) {
+                ++xt;
+              } else {
+                if (std::abs(xt - x) == 0) { //достигнута граница, идём влево
+                  degree = (degree + 90)%360;
+                  border = true;
+                  break;
+                } else { //достигнута граница, идём в другую сторону
+                  degree = (degree + 180)%360;
+                  border = true;
+                  break;
+                }
+              }
+            }
+
+            if (attackingField[yt][xt]) { //стреляли ли мы сюда?
+              yt = y;
+              xt = x;
+              degree = (degree + 90)%360;
+              direction = false;
+            } else {
+              attackingField[yt][xt] = true;
+              if (!opponentField[yt][xt]) { //Если не попали
+                std::cout << " - Past!" << std::endl;
+                if (std::abs(xt - x) == 1 || std::abs(yt - y) == 1) {
+                  degree = (degree + 90)%360;
+                } else if (std::abs(xt - x) > 1 || std::abs(yt - y) > 1) {
+                  degree = (degree + 180)%360;
+                }
+                yt = y;
+                xt = x;
+                Visualisation(attackingField);
+                player1Move = true;
+                std::cout << "\n===================" << std::endl << player1 << ", your move." << std::endl;
+                Game(player1AttackingField,
+                     player1opponentField,
+                     player1xCoordinates,
+                     player1yCoordinates,
+                     player2ShipCount);
+                if (player2ShipCount == 0)break;
+              } else {
+                opponentField[yt][xt] = false;
+                std::cout << " - Hit!" << std::endl;
+                player1Move = false;
+                Visualisation(attackingField);
+              }
+            }
+
+          } while (player1Move || !direction
+              || !ShipDefeatingCheck(opponentField,
+                                     xCoordinates,
+                                     yCoordinates,
+                                     shipCount)); //пока хоть одно условие не выполняется
+        } while (border);
+      }
+    }else{
+      std::cout << " - Past!" << std::endl;
+    }
+  } while (check && shipCount != 0);
+  Visualisation(attackingField);
 }
 
 int main() {
@@ -419,7 +555,8 @@ int main() {
           Game(field1Attacking, field2, xCoordinatesField2, yCoordinatesField2, shipCountPlayer2);
         } else {
           std::cout << "\n===================" << std::endl << player2 << " is moving." << std::endl;
-          BotMove(field2Attacking, field1, xCoordinatesField1, yCoordinatesField1, shipCountPlayer1);
+          BotMove(field2Attacking, field1, xCoordinatesField1, yCoordinatesField1, shipCountPlayer1, player1,
+                  field1Attacking, field2, xCoordinatesField2, yCoordinatesField2, shipCountPlayer2);
           //Game(field2Attacking, field1, deckCountPlayer1);
         }
         move = !move;
