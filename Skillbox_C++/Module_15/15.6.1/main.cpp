@@ -4,10 +4,11 @@
 int main() {
   std::cout << "--- Exercise 1 ---" << std::endl;
   std::array<int, 9> list = {-2, 1, 3, -4, -1, 2, 1, 5, 4};
-  int maxSumm{list[0] + list[1] + list[2] + list[3]}, firstElement{0};
-  for (int i = 1; i < list.size() - 3; ++i) {
-    if ((list[i] + list[i + 1] + list[i + 2] + list[i + 3]) > maxSumm) {
-      maxSumm = list[i] + list[i + 1] + list[i + 2] + list[i + 3];
+  int maxSum{list[0] + list[1] + list[2] + list[3]}, firstElement{0};
+  for (int i = 1, sum{maxSum}; i < list.size() - 3; ++i) {
+    sum += list[i + 3] - list[i - 1];
+    if (sum > maxSum) {
+      maxSum = sum;
       firstElement = i;
     }
   }
