@@ -11,7 +11,7 @@ int main() {
       firstElement = i;
     }
   }
-  std::cout << "Max sum of elements is located between " << firstElement << " and " << firstElement + 3 << ": {"
+  std::cout << "Max sum of elements located between " << firstElement << " and " << firstElement + 3 << " indexes': {"
             << list[firstElement] << "," << list[firstElement + 1] << "," << list[firstElement + 2] << ","
             << list[firstElement + 3] << "}";
 
