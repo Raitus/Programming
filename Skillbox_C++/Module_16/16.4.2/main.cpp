@@ -33,12 +33,12 @@ int main() {
   std::cout << "--- Fractional Number Sewer ---" << std::endl;
   std::string fractionalNumber;
   std::cout << "Input first part of fractional finalNumber: ";
-  std::cin >> fractionalNumber;
+  std::getline(std::cin,fractionalNumber);
   FractionalNumberCheck(fractionalNumber, true);
   fractionalNumber += '.';
   {
     std::string partOfTheNumber;
-    std::cin >> partOfTheNumber;
+    std::getline(std::cin,partOfTheNumber);
     fractionalNumber+=partOfTheNumber;
   }
   FractionalNumberCheck(fractionalNumber, false);
