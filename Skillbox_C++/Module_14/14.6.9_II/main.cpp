@@ -485,7 +485,6 @@ void BotMove(std::array<std::array<bool, fieldSize>, fieldSize> &attackingField,
           xt = x, yt = y;
           bool direction, player1Move{false};
           border = false;
-          //bool top = false, left = false, bottom = false, right = false;
           //input coordinates
           do {
             direction = true;
