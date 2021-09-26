@@ -2,10 +2,10 @@
 #include <cstdio>
 
 void speedCheck (float &speed){
-  if (speed>150.01){
-    speed=150.0;
-  }else if (speed<0){
-    speed=0.0;
+  if (speed>149.99){
+    speed=150.00;
+  }else if (speed<0.01){
+    speed=0.00;
   }
 }
 
