@@ -1,4 +1,12 @@
+# Clion files
 **/cmake-build-debug
 **/.idea
 *.pdf
 /Another
+
+# Visual Studio files
+**/.vs
+**/*_VS/*_VS/Debug/
+**/*_VS/*_VS/*_VS.vcxproj*
+**/*_VS/Debug/
+**/*_VS/*.sln
