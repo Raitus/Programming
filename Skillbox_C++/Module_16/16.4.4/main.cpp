@@ -38,58 +38,33 @@ void NoteInput(std::string &listOfNotes) {
   }
 }
 
-void NotePrinting(NoteName note){
-  if (note==DO){
-    std::cout<<"Do";
-  }else if (note==RE){
-    std::cout<<"Re";
-  }
-  else if (note==MI){
-    std::cout<<"Mi";
-  }
-  else if (note==FA){
-    std::cout<<"Fa";
-  }
-  else if (note==SOL){
-    std::cout<<"Sol";
-  }
-  else if (note==LA){
-    std::cout<<"La";
-  }
-  else if (note==SI){
-    std::cout<<"Si";
-  }
-}
-
 void NoteOutput(std::string &listOfNotes){
-  NoteName note;
   std::cout<<"\n The song: "<<std::endl;
   for (int i = 0, num; i < listOfNotes.size(); ++i) {
     num=((listOfNotes[i])-'0')-1;
     if (i!=0){
       std::cout<<" ";
     }
-    if (num==0){
-      note=DO;
-    }else if(num==1){
-      note=RE;
+    if (num==DO){
+      std::cout<<"Do";
+    }else if (num==RE){
+      std::cout<<"Re";
     }
-    else if(num==2){
-      note=MI;
+    else if (num==MI){
+      std::cout<<"Mi";
     }
-    else if(num==3){
-      note=FA;
+    else if (num==FA){
+      std::cout<<"Fa";
     }
-    else if(num==4){
-      note=SOL;
+    else if (num==SOL){
+      std::cout<<"Sol";
     }
-    else if(num==5){
-      note=LA;
+    else if (num==LA){
+      std::cout<<"La";
     }
-    else if(num==6){
-      note=SI;
+    else if (num==SI){
+      std::cout<<"Si";
     }
-    NotePrinting(note);
   }
 }
 
