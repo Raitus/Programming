@@ -10,3 +10,7 @@
 **/*_VS/*_VS/*_VS.vcxproj*
 **/*_VS/Debug/
 **/*_VS/*.sln
+
+#Another files
+*.vsdx
+*.~vsdx
