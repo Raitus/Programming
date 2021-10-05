@@ -1,26 +1,35 @@
 #include <iostream>
 #include <string>
+#include <sstream>
 
 bool StringCheck(std::string &text) {
-  for (char i: text) {
-    if (!((i >= '/' && i <= '9') || i == '*' || i == '-' || i == '+' || i == '.')) {
+  for (int i{0}, lengthMinus{0};i<text.size()-lengthMinus;++i) {
+    if (!((text[i] >= '/' && text[i] <= '9') || text[i] == '*' || text[i] == '-' || text[i] == '+' || text[i] == '.')) {
       return false;
+    }
+    if (text[i]=='*'||text[i]=='/'||text[i]=='-'||text[i]=='+'){
+      char sign{text[i]};
+      text[i]=' ';
+      text+=' ';
+      text+=sign;
+      lengthMinus=2;
     }
   }
   return true;
 }
 
-void StringInput(std::string &inputField) {
-  bool check{false};
+void StringInput(std::stringstream &inputField) {
   do {
+    std::string inputString;
     std::cout << "Input string: ";
-    std::cin >> inputField;
-    if (StringCheck(inputField)) {
-      check = true;
+    std::cin >> inputString;
+    if (StringCheck(inputString)) {
+      inputField<<inputString;
+      break;
     } else {
       std::cout << "Wrong input! Try again." << std::endl;
     }
-  } while (!check);
+  } while (true);
 }
 
 void Calculation(double firstNumber, char arithmeticSign, double secondNumber) {
@@ -40,28 +49,16 @@ void Calculation(double firstNumber, char arithmeticSign, double secondNumber) {
   }
 }
 
-void StringDefragmentation(std::string &inputField) {
+void StringDefragmentation(std::stringstream &inputField) {
   std::string firstNumber, secondNumber;
   char arithmeticSign;
-  bool firstPartCheck{false};
-  for (char i : inputField) {
-    if (!firstPartCheck) {
-      if (!(i == '*' || i == '-' || i == '+' || i == '/')) {
-        firstNumber += i;
-      } else {
-        arithmeticSign = i;
-        firstPartCheck = true;
-      }
-    } else {
-      secondNumber += i;
-    }
-  }
+  inputField>>firstNumber>>secondNumber>>arithmeticSign;
   Calculation(std::stod(firstNumber), arithmeticSign, std::stod(secondNumber));
 }
 
 int main() {
   std::cout << "--- M16 Calculator ---" << std::endl;
-  std::string inputField;
+  std::stringstream inputField;
   StringInput(inputField);
   StringDefragmentation(inputField);
   return 0;
