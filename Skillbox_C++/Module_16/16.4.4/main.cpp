@@ -1,76 +1,81 @@
 #include <iostream>
 #include <string>
+#include <vector>
 
 enum NoteName {
-  DO,
+  DO = 1,
   RE,
-  MI,
-  FA,
-  SOL,
-  LA,
-  SI
+  MI = 4,
+  FA = 8,
+  SOL = 16,
+  LA = 32,
+  SI = 64
 };
 
-bool InputNotesCorrectness(std::string &notes) {
-  if (notes.size() != 3) {
-    return false;
-  } else {
-    for (char note: notes) {
-      if (!(note >= '1' && note <= '7')) {
-        return false;
-      }
+bool InputNoteCorrectness(std::string &notes) {
+  for (char note: notes) {
+    if (!(note >= '1' && note <= '7')) {
+      return false;
     }
-    return true;
+  }
+  return true;
+}
+
+void TranslatingIntoBitMask(std::string &inputNotes, std::vector<int> &notes) {
+  for (int i = 0, derivative; i < inputNotes.size(); ++i) {
+    derivative = 1;
+    for (int j = 1; j < (inputNotes[i]-'0'); ++j) {
+      derivative <<= 1;
+    }
+    notes.push_back(derivative);
   }
 }
 
-void NoteInput(std::string &listOfNotes) {
+void NoteInput(std::vector<int> &listOfNotes) {
   std::string inputNotes;
   std::cout << "Input combination of notes:" << std::endl;
   for (int i = 0; i < 12; ++i) {
     std::cin >> inputNotes;
-    if (!InputNotesCorrectness(inputNotes)) {
+    if (!InputNoteCorrectness(inputNotes)) {
       i--;
       std::cout << "You inputted wrong note number! Try again." << std::endl;
     } else {
-      listOfNotes += inputNotes;
+      TranslatingIntoBitMask(inputNotes, listOfNotes);
     }
   }
 }
 
-void NoteOutput(std::string &listOfNotes){
-  std::cout<<"\n The song: "<<std::endl;
-  for (int i = 0, num; i < listOfNotes.size(); ++i) {
-    num=((listOfNotes[i])-'0')-1;
-    if (i!=0){
-      std::cout<<" ";
+void BeautyOutput(int note) {
+  if (note == DO) {
+    std::cout << "Do";
+  } else if (note == RE) {
+    std::cout << "Re";
+  } else if (note == MI) {
+    std::cout << "Mi";
+  } else if (note == FA) {
+    std::cout << "Fa";
+  } else if (note == SOL) {
+    std::cout << "Sol";
+  } else if (note == LA) {
+    std::cout << "La";
+  } else if (note == SI) {
+    std::cout << "Si";
+  }
+}
+
+void NoteOutput(std::vector<int> &listOfNotes) {
+  std::cout << "\n The song: " << std::endl;
+  for (int i = 0; i < listOfNotes.size(); ++i) {
+    if (i != 0) {
+      std::cout << " ";
     }
-    if (num==DO){
-      std::cout<<"Do";
-    }else if (num==RE){
-      std::cout<<"Re";
-    }
-    else if (num==MI){
-      std::cout<<"Mi";
-    }
-    else if (num==FA){
-      std::cout<<"Fa";
-    }
-    else if (num==SOL){
-      std::cout<<"Sol";
-    }
-    else if (num==LA){
-      std::cout<<"La";
-    }
-    else if (num==SI){
-      std::cout<<"Si";
-    }
+    BeautyOutput(listOfNotes[i]);
   }
 }
 
 int main() {
   std::cout << "--- Mechanical Piano ---" << std::endl;
-  std::string listOfNotes;
+  std::vector<int> listOfNotes;
   NoteInput(listOfNotes);
   NoteOutput(listOfNotes);
   return 0;
