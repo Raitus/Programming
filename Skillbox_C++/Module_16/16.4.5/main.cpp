@@ -27,7 +27,7 @@ bool GlobalInputCorrectness(std::stringstream &input) {
   input >> value;
   if (!TemperatureCorrectnessCheck(value)) return false;
   input >> value;
-  if (value != "yes" || value != "no") {
+  if (value != "yes" && value != "no") {
     for (char i: value) {
       if (!(i == 'y' || i == 'n')) {
         return false;
@@ -86,55 +86,49 @@ void PrepareToRealisation(std::stringstream &input,
 
 void ConditionsRealisation(std::stringstream &input,
                            int time,
-                           int &statusOfAllHouse,
-                           int &statusOfMainSockets,
-                           int &statusOfInnerLight,
-                           int &statusOfOuter_light,
-                           int &statusOfHouseHeating,
-                           int &statusOfWaterPumpHeating,
-                           int &statusOfConditioner) {
+                           int &status) {
   float outTempFloat, innerTempFloat;
   std::string movement, light;
   PrepareToRealisation(input, outTempFloat, innerTempFloat, movement, light);
 
-  statusOfAllHouse |= ELECTRICITY_ALL_HOUSE;
-  statusOfMainSockets |= ELECTRICITY_MAIN_SOCKETS;
+  status |= ELECTRICITY_ALL_HOUSE;
+  status |= ELECTRICITY_MAIN_SOCKETS;
 
-  if (!((statusOfAllHouse & ELECTRICITY_ALL_HOUSE) && (statusOfMainSockets & ELECTRICITY_MAIN_SOCKETS))) {
+  if (!((status & ELECTRICITY_ALL_HOUSE) && (status & ELECTRICITY_MAIN_SOCKETS))) {
     std::cout << "Electricity in house is off. Nothing happened!" << std::endl;
   } else {
-    if (outTempFloat < 0.0 && !(statusOfWaterPumpHeating & ELECTRICITY_WATER_PUMP_HEATING)) {
-      statusOfWaterPumpHeating |= ELECTRICITY_WATER_PUMP_HEATING;
+    if (outTempFloat < 0.0 && !(status & ELECTRICITY_WATER_PUMP_HEATING)) {
+      status |= ELECTRICITY_WATER_PUMP_HEATING;
       std::cout << "Water pump heating is on." << std::endl;
-    } else if (outTempFloat > 5.0 && (statusOfWaterPumpHeating & ELECTRICITY_WATER_PUMP_HEATING)) {
-      statusOfWaterPumpHeating &= ~ELECTRICITY_WATER_PUMP_HEATING;
+    } else if (outTempFloat > 5.0 && (status & ELECTRICITY_WATER_PUMP_HEATING)) {
+      status &= ~ELECTRICITY_WATER_PUMP_HEATING;
       std::cout << "Water pump heating is off." << std::endl;
     }
     if (movement == "yes" && (time >= 16 && time <= 23 || time >= 0 && time <= 5)
-        && !(statusOfOuter_light & ELECTRICITY_OUTER_LIGHT)) {
-      statusOfOuter_light |= ELECTRICITY_OUTER_LIGHT;
+        && !(status & ELECTRICITY_OUTER_LIGHT)) {
+      status |= ELECTRICITY_OUTER_LIGHT;
       std::cout << "Outer light is on." << std::endl;
-    } else if ((movement == "no" && statusOfOuter_light & ELECTRICITY_OUTER_LIGHT)
-        || (movement == "yes" && time >= 5 && time <= 16 && statusOfOuter_light & ELECTRICITY_OUTER_LIGHT)) {
-      statusOfOuter_light &= ~ELECTRICITY_OUTER_LIGHT;
+    } else if ((movement == "no" && status & ELECTRICITY_OUTER_LIGHT)
+        || (movement == "yes" && time >= 5 && time <= 16 && status & ELECTRICITY_OUTER_LIGHT)) {
+      status &= ~ELECTRICITY_OUTER_LIGHT;
       std::cout << "Outer light is off." << std::endl;
     }
-    if (innerTempFloat < 22.0 && !(statusOfHouseHeating & ELECTRICITY_HOUSE_HEATING)) {
-      statusOfHouseHeating |= ELECTRICITY_HOUSE_HEATING;
+    if (innerTempFloat < 22.0 && !(status & ELECTRICITY_HOUSE_HEATING)) {
+      status |= ELECTRICITY_HOUSE_HEATING;
       std::cout << "Inner heating is on." << std::endl;
-    } else if (innerTempFloat > 25.0 && (statusOfHouseHeating & ELECTRICITY_HOUSE_HEATING)) {
-      statusOfHouseHeating &= ~ELECTRICITY_HOUSE_HEATING;
+    } else if (innerTempFloat > 25.0 && (status & ELECTRICITY_HOUSE_HEATING)) {
+      status &= ~ELECTRICITY_HOUSE_HEATING;
       std::cout << "Inner heating is off." << std::endl;
     }
-    if (innerTempFloat > 30.0 && !(statusOfConditioner & ELECTRICITY_CONDITIONER)) {
-      statusOfConditioner |= ELECTRICITY_CONDITIONER;
+    if (innerTempFloat > 30.0 && !(status & ELECTRICITY_CONDITIONER)) {
+      status |= ELECTRICITY_CONDITIONER;
       std::cout << "Conditioner is on." << std::endl;
-    } else if (innerTempFloat < 25 && (statusOfConditioner & ELECTRICITY_CONDITIONER)) {
-      statusOfConditioner &= ~ELECTRICITY_CONDITIONER;
+    } else if (innerTempFloat < 25 && (status & ELECTRICITY_CONDITIONER)) {
+      status &= ~ELECTRICITY_CONDITIONER;
       std::cout << "Conditioner is off." << std::endl;
     }
-    if (light == "on" && !(statusOfInnerLight & ELECTRICITY_INNER_LIGHT)) {
-      statusOfInnerLight |= ELECTRICITY_INNER_LIGHT;
+    if (light == "on" && !(status & ELECTRICITY_INNER_LIGHT)) {
+      status |= ELECTRICITY_INNER_LIGHT;
       int lightTemp = 2700;
       if (time >= 0 && time <= 16) {
         lightTemp = 5000;
@@ -148,8 +142,8 @@ void ConditionsRealisation(std::stringstream &input,
         lightTemp = 5000 - (time%16)*575;
       }
       std::cout << "Inner light is on with changed temperature to " << lightTemp << "K." << std::endl;
-    } else if (light == "off" && statusOfInnerLight & ELECTRICITY_INNER_LIGHT) {
-      statusOfInnerLight &= ~ELECTRICITY_INNER_LIGHT;
+    } else if (light == "off" && status & ELECTRICITY_INNER_LIGHT) {
+      status &= ~ELECTRICITY_INNER_LIGHT;
       std::cout << "Inner light is off." << std::endl;
     }
   }
@@ -160,19 +154,10 @@ void ConditionsRealisation(std::stringstream &input,
 int main() {
   std::cout << "--- Clever house ---" << std::endl;
   std::stringstream input;
-  for (int time{0}, i{0}, statusOfAllHouse{0}, statusOfMainSockets{0}, statusOfInnerLight{0}, statusOfOuter_light{0},
-           statusOfHouseHeating{0}, statusOfWaterPumpHeating{0}, statusOfConditioner{0}; i < 48; ++i, ++time) {
+  for (int time{0}, i{0}, status{0}; i < 48; ++i, ++time) {
     if (time == 24) time = 0;
     GlobalInput(input, time);
-    ConditionsRealisation(input,
-                          time,
-                          statusOfAllHouse,
-                          statusOfMainSockets,
-                          statusOfInnerLight,
-                          statusOfOuter_light,
-                          statusOfHouseHeating,
-                          statusOfWaterPumpHeating,
-                          statusOfConditioner);
+    ConditionsRealisation(input, time, status);
   }
 
   return 0;
