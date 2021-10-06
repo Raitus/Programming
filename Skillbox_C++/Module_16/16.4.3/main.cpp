@@ -2,7 +2,7 @@
 #include <string>
 #include <sstream>
 
-bool StringCheck(std::string &text) {
+bool StringCheckAndTransform(std::string &text) {
   for (int i{0}, lengthMinus{0};i<text.size()-lengthMinus;++i) {
     if (!((text[i] >= '/' && text[i] <= '9') || text[i] == '*' || text[i] == '-' || text[i] == '+' || text[i] == '.')) {
       return false;
@@ -23,7 +23,7 @@ void StringInput(std::stringstream &inputField) {
     std::string inputString;
     std::cout << "Input string: ";
     std::cin >> inputString;
-    if (StringCheck(inputString)) {
+    if (StringCheckAndTransform(inputString)) {
       inputField<<inputString;
       break;
     } else {
