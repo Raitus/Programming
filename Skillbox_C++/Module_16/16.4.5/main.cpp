@@ -25,6 +25,8 @@ bool GlobalInputCorrectness(std::stringstream &input) {
   input >> value;
   if (!TemperatureCorrectnessCheck(value)) return false;
   input >> value;
+  if (!TemperatureCorrectnessCheck(value)) return false;
+  input >> value;
   if (value != "yes" && value != "no") {
     for (char i: value) {
       if (!(i == 'y' || i == 'n')) {
@@ -157,6 +159,5 @@ int main() {
     GlobalInput(input, time);
     ConditionsRealisation(input, time, status);
   }
-
   return 0;
 }
