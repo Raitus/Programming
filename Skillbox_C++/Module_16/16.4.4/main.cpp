@@ -1,6 +1,5 @@
 #include <iostream>
 #include <string>
-
 #include <vector>
 
 enum NoteName {
@@ -33,7 +32,6 @@ void TranslatingIntoBitMask(std::string &inputNotes, std::vector<int> &notes) {
 }
 
 void NoteInput(std::vector<int> &listOfNotes) {
-
   std::string inputNotes;
   std::cout << "Input combination of notes:" << std::endl;
   for (int i = 0; i < 12; ++i) {
@@ -76,7 +74,7 @@ void NoteOutput(std::vector<int> &listOfNotes) {
 }
 
 int main() {
-  std::cout << "--- Mechanical Piano ---" << std::endl;
+  std::cout << "--- M16 Mechanical Piano ---" << std::endl;
   std::vector<int> listOfNotes;
   NoteInput(listOfNotes);
   NoteOutput(listOfNotes);
