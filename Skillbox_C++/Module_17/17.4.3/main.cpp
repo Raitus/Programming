@@ -1,32 +1,32 @@
 #include <iostream>
 
-int LengthOfString(const char *string){
+int LengthOfString(const char *string) {
   int charCount{0};
-  for (; string[charCount]!='\0'; ++charCount) {}
+  for (; string[charCount] != '\0'; ++charCount) {}
   return charCount;
 }
 
-std::string Substr(const char *stringA, const char *stringB) {
+bool Substr(const char *stringA, const char *stringB) {
   int stringA_Length, stringB_Length;
   stringA_Length = LengthOfString(stringA);
   stringB_Length = LengthOfString(stringB);
   bool endOfString{false};
-  for (int i{0}; stringA_Length-i>=stringB_Length && !endOfString && stringA[i] != '\0'; ++i) {
+  for (int i{0}; stringA_Length - i >= stringB_Length && !endOfString && stringA[i] != '\0'; ++i) {
     if (stringA[i] == *stringB) {
       bool compare{false};
       for (int j{0}; stringB[j] != '\0'; ++j) {
         if (stringA[i + j] == '\0') {
           endOfString = true;
           break;
-        }else if (stringA[i + j] != stringB[j]) {
+        } else if (stringA[i + j] != stringB[j]) {
           compare = false;
           break;
         } else compare = true;
       }
-      if (compare) return "true";
+      if (compare) return true;
     }
   }
-  return "false";
+  return false;
 }
 
 int main() {
@@ -39,7 +39,12 @@ int main() {
   char *f = "o l"; //false
   char *g = "lo "; //true
   char *i = "llo worlk"; //false
-  std::cout << Substr(a, b) << " " << Substr(a, c) << " " << Substr(a, d) << " " << Substr(a, e) << " " << Substr(a, f)
-            << " " << Substr(a, g)<< " " << Substr(a, i);
+  std::cout << std::boolalpha << Substr(a, b) << " "
+            << std::boolalpha << Substr(a, c) << " "
+            << std::boolalpha << Substr(a, d) << " "
+            << std::boolalpha << Substr(a, e) << " "
+            << std::boolalpha << Substr(a, f) << " "
+            << std::boolalpha << Substr(a, g) << " "
+            << std::boolalpha << Substr(a, i);
   return 0;
 }
