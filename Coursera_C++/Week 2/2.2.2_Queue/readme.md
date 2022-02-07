@@ -26,3 +26,20 @@
 
 Формат вывода - 
 Для каждой операции WORRY_COUNT выведите одно целое число — количество беспокоящихся людей в очереди.
+
+8
+COME 5
+WORRY 1
+WORRY 4
+COME -2
+WORRY_COUNT
+COME 3
+WORRY 3
+WORRY_COUNT
+
+5
+COME 5
+WORRY 0
+QUIET 4
+COME -4
+WORRY_COUNT
