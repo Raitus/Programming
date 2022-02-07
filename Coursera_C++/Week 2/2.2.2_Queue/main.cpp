@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <algorithm>
 
 int main() {
     int countOfOperations, inputNum;
@@ -35,13 +36,7 @@ int main() {
         }else if (word == "QUIET"){
             queue[inputNum] = false;
         }else{
-            int worryCount{0};
-            for (auto && j : queue) {
-                if (j){
-                    worryCount++;
-                }
-            }
-            std::cout<<worryCount<<std::endl;
+            std::cout << std::count(begin(queue), end(queue), true) << std::endl;
         }
         word = "";
         input = "";
