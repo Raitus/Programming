@@ -27,9 +27,9 @@ int main() {
         std::string firstWord, secondWord;
         std::cin>>firstWord>>secondWord;
         if (BuildCharCounters(firstWordCharCount, secondWordCharCount, firstWord, secondWord)){
-            std::cout<<"true"<<std::endl;
+            std::cout<<"YES"<<std::endl;
         }else{
-            std::cout<<"false"<<std::endl;
+            std::cout<<"NO"<<std::endl;
         }
         firstWordCharCount.clear();
         secondWordCharCount.clear();
