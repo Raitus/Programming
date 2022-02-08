@@ -8,31 +8,24 @@ void CharAnalyser(std::map<char, int>& vocabulary, const std::string& word){
     }
 }
 
-bool BuildCharCounters(std::map<char, int>& firstMap, std::map<char, int>& secondMap,
-                       const std::string& firstWord, const std::string& secondWord){
-    CharAnalyser(firstMap, firstWord);
-    CharAnalyser(secondMap, secondWord);
-    if (firstMap==secondMap){
-        return true;
-    }else{
-        return false;
-    }
+std::map<char, int> BuildCharCounters(const std::string& word){
+    std::map<char, int> vocabulary;
+    CharAnalyser(vocabulary, word);
+    return vocabulary;
 }
 
 int main() {
-    std::map<char, int> firstWordCharCount, secondWordCharCount;
     int wordsNumber;
     std::cin>>wordsNumber;
     for (int i = 0; i < wordsNumber; ++i) {
         std::string firstWord, secondWord;
         std::cin>>firstWord>>secondWord;
-        if (BuildCharCounters(firstWordCharCount, secondWordCharCount, firstWord, secondWord)){
+        if (BuildCharCounters(firstWord)==
+            BuildCharCounters(secondWord)){
             std::cout<<"YES"<<std::endl;
         }else{
             std::cout<<"NO"<<std::endl;
         }
-        firstWordCharCount.clear();
-        secondWordCharCount.clear();
     }
     return 0;
 }
