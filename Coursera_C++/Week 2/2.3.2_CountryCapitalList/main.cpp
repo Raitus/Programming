@@ -31,22 +31,26 @@ int main() {
         }else if (operation == "RENAME"){
             std::string old_country_name, new_country_name;
             std::cin>>old_country_name>>new_country_name;
-            bool new_capital_is_exist{false};
-            for (auto& item : countryCapitalList) {
-                if (item.first==new_country_name){
-                    std::cout << "Incorrect rename, skip" << std::endl;
-                    new_capital_is_exist = true;
-                }
-            }
-            if (!new_capital_is_exist) {
+            if (countryCapitalList.empty()){
+                std::cout << "Incorrect rename, skip" << std::endl;
+            } else {
+                bool new_capital_is_exist{false};
                 for (auto &item: countryCapitalList) {
-                    if (item.first == old_country_name) {
-                        auto country = item;
-                        countryCapitalList.erase(old_country_name);
-                        countryCapitalList[new_country_name] = country.second;
-                        std::cout << "Country " << old_country_name << " with capital " << country.second <<
-                                  " has been renamed to " << new_country_name << std::endl;
-                        break;
+                    if (item.first == new_country_name) {
+                        std::cout << "Incorrect rename, skip" << std::endl;
+                        new_capital_is_exist = true;
+                    }
+                }
+                if (!new_capital_is_exist) {
+                    for (auto &item: countryCapitalList) {
+                        if (item.first == old_country_name) {
+                            auto country = item;
+                            countryCapitalList.erase(old_country_name);
+                            countryCapitalList[new_country_name] = country.second;
+                            std::cout << "Country " << old_country_name << " with capital " << country.second <<
+                                      " has been renamed to " << new_country_name << std::endl;
+                            break;
+                        }
                     }
                 }
             }
