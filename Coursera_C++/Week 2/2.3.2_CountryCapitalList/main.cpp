@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 #include <map>
 
 int main() {
@@ -31,34 +32,20 @@ int main() {
         }else if (operation == "RENAME"){
             std::string old_country_name, new_country_name;
             std::cin>>old_country_name>>new_country_name;
-            if (countryCapitalList.empty()){
+            if (countryCapitalList.empty()||old_country_name==new_country_name
+                || countryCapitalList.count(new_country_name) == 1){
                 std::cout << "Incorrect rename, skip" << std::endl;
             } else {
-                bool new_capital_is_exist{false};
-                for (auto &item: countryCapitalList) {
-                    if (item.first == new_country_name) {
-                        std::cout << "Incorrect rename, skip" << std::endl;
-                        new_capital_is_exist = true;
-                    }
-                }
-                if (!new_capital_is_exist) {
-                    for (auto &item: countryCapitalList) {
-                        if (item.first == old_country_name) {
-                            auto country = item;
-                            countryCapitalList.erase(old_country_name);
-                            countryCapitalList[new_country_name] = country.second;
-                            std::cout << "Country " << old_country_name << " with capital " << country.second <<
-                                      " has been renamed to " << new_country_name << std::endl;
-                            break;
-                        }
-                    }
-                }
+                countryCapitalList[new_country_name] = countryCapitalList[old_country_name];
+                std::cout << "Country " << old_country_name << " with capital " << countryCapitalList[new_country_name]
+                    << " has been renamed to " << new_country_name << std::endl;
+                countryCapitalList.erase(old_country_name);
             }
         }else if (operation == "ABOUT"){
             std::string country;
             std::cin>>country;
             bool is_exist{false};
-            for (auto& item : countryCapitalList) {
+            for (const auto& item : countryCapitalList) {
                 if (item.first==country){
                     std::cout<<"Country "<<item.first<<" has capital "<<item.second<<std::endl;
                     is_exist = true;
@@ -72,7 +59,7 @@ int main() {
             if (countryCapitalList.empty()){
                 std::cout<<"There are no countries in the world"<<std::endl;
             }else{
-                for (auto & item : countryCapitalList) {
+                for (const auto& item : countryCapitalList) {
                     std::cout << item.first << "/" << item.second << " ";
                 }
                 std::cout<<std::endl;

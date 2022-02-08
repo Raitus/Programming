@@ -99,3 +99,15 @@ RENAME UnitedStatesOfBrazil FederativeRepublicOfBrazil
 ABOUT RussianEmpire
 DUMP
 RENAME USSR USSR
+
+10
+CHANGE_CAPITAL RussianEmpire Petrograd
+RENAME USSR RussianEmpire
+DUMP
+ABOUT USSR
+DUMP
+RENAME RussianEmpire RussianEmpire
+DUMP
+CHANGE_CAPITAL UnitedStatesOfBrazil Brasilia
+RENAME RussianEmpire UnitedStatesOfBrazil
+DUMP
